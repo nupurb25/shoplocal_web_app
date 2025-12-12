@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Order Confirmed - ShopLocal{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+        <h1 class="mt-3">Order Placed Successfully!</h1>
+        <p class="lead text-muted">Thank you for supporting local artisans</p>
+    </div>
+    
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <h5 class="mb-1">Order #{{ order.order_number }}</h5>
+                            <p class="text-muted mb-0">
+                                <i class="bi bi-calendar"></i> {{ order.created_at.strftime('%B %d, %Y at %I:%M %p') }}
+                            </p>
+                        </div>
+                        <span class="badge bg-success fs-6">{{ order.status|upper }}</span>
+                    </div>
+                    
+                    <hr>
+                    
+                    <h6 class="mb-3">Order Details</h6>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in order_items %}
+                            <tr>
+                                <td>{{ item.product_name }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ item.price|currency }}</td>
+                                <td>{{ item.subtotal|currency }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                                <td><strong class="text-primary">{{ order.total_amount|currency }}</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    
+                    <hr>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Customer Information</h6>
+                            <p class="mb-1"><strong>{{ order.customer_name }}</strong></p>
+                            <p class="mb-1"><i class="bi bi-envelope"></i> {{ order.customer_email }}</p>
+                            <p class="mb-1"><i class="bi bi-telephone"></i> {{ order.customer_phone }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Shipping Address</h6>
+                            <p>{{ order.shipping_address or 'Not provided' }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info mt-4">
+                        <i class="bi bi-info-circle"></i> 
+                        You will receive an order confirmation email at <strong>{{ order.customer_email }}</strong>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <a href="{{ url_for('home') }}" class="btn btn-primary">
+                            Continue Shopping
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

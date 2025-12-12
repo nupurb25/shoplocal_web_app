@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}About Us - ShopLocal{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="mb-4">About ShopLocal</h1>
+            
+            <p class="lead">
+                ShopLocal is an e-commerce platform dedicated to supporting Indian artisans and 
+                preserving traditional handicrafts.
+            </p>
+            
+            <h3 class="mt-5 mb-3">Our Mission</h3>
+            <p>
+                We connect skilled artisans from across India with customers who appreciate 
+                authentic, handcrafted products. Every purchase supports local communities 
+                and helps preserve centuries-old craft traditions.
+            </p>
+            
+            <h3 class="mt-5 mb-3">Why ShopLocal?</h3>
+            <ul class="list-unstyled">
+                <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i> 100% Authentic Handcrafted Products</li>
+                <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i> Direct Support to Artisan Communities</li>
+                <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i> Eco-Friendly and Sustainable</li>
+                <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i> Fair Prices for Artisans</li>
+                <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i> Free Shipping Across India</li>
+            </ul>
+            
+            <h3 class="mt-5 mb-3">Our Products</h3>
+            <p>
+                From traditional sarees and jewelry to home decor and pottery, we offer 
+                a curated collection of handcrafted products that represent India's 
+                rich cultural heritage.
+            </p>
+            
+            <div class="text-center mt-5">
+                <a href="{{ url_for('home') }}" class="btn btn-primary btn-lg">
+                    Explore Our Collection
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

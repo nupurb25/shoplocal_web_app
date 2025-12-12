@@ -1,0 +1,135 @@
+{% extends "admin/base.html" %}
+
+{% block page_title %}{% if product %}Edit Product{% else %}Add New Product{% endif %}{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h3>{% if product %}Edit Product{% else %}Add New Product{% endif %}</h3>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form action="{% if product %}{{ url_for('admin_edit_product', product_id=product.id) }}{% else %}{{ url_for('admin_add_product') }}{% endif %}" 
+                      method="POST" enctype="multipart/form-data">
+                    
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Product Name *</label>
+                        <input type="text" class="form-control" id="name" name="name" 
+                               value="{% if product %}{{ product.name }}{% endif %}" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description *</label>
+                        <textarea class="form-control" id="description" name="description" rows="4" required>{% if product %}{{ product.description }}{% endif %}</textarea>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="price" class="form-label">Price (₹) *</label>
+                            <input type="number" class="form-control" id="price" name="price" 
+                                   step="0.01" min="0" value="{% if product %}{{ product.price }}{% endif %}" required>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="category" class="form-label">Category *</label>
+                            <select class="form-select" id="category" name="category" required>
+                                <option value="">Select Category</option>
+                                <option value="Clothing" {% if product and product.category == 'Clothing' %}selected{% endif %}>Clothing</option>
+                                <option value="Jewelry" {% if product and product.category == 'Jewelry' %}selected{% endif %}>Jewelry</option>
+                                <option value="Home Decor" {% if product and product.category == 'Home Decor' %}selected{% endif %}>Home Decor</option>
+                                <option value="Kitchen" {% if product and product.category == 'Kitchen' %}selected{% endif %}>Kitchen</option>
+                                <option value="Art" {% if product and product.category == 'Art' %}selected{% endif %}>Art</option>
+                                <option value="Handicrafts" {% if product and product.category == 'Handicrafts' %}selected{% endif %}>Handicrafts</option>
+                                <option value="Pooja Items" {% if product and product.category == 'Pooja Items' %}selected{% endif %}>Pooja Items</option>
+                                <option value="Accessories" {% if product and product.category == 'Accessories' %}selected{% endif %}>Accessories</option>
+                                <option value="Home Textile" {% if product and product.category == 'Home Textile' %}selected{% endif %}>Home Textile</option>
+                                <option value="Home Storage" {% if product and product.category == 'Home Storage' %}selected{% endif %}>Home Storage</option>
+                                <option value="Personal Care" {% if product and product.category == 'Personal Care' %}selected{% endif %}>Personal Care</option>
+                                <option value="Wall Art" {% if product and product.category == 'Wall Art' %}selected{% endif %}>Wall Art</option>
+                                <option value="Stationery" {% if product and product.category == 'Stationery' %}selected{% endif %}>Stationery</option>
+                                <option value="Lighting" {% if product and product.category == 'Lighting' %}selected{% endif %}>Lighting</option>
+                                <option value="Toys" {% if product and product.category == 'Toys' %}selected{% endif %}>Toys</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="stock" class="form-label">Stock Quantity *</label>
+                            <input type="number" class="form-control" id="stock" name="stock" 
+                                   min="0" value="{% if product %}{{ product.stock }}{% else %}0{% endif %}" required>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="low_stock_threshold" class="form-label">Low Stock Threshold *</label>
+                            <input type="number" class="form-control" id="low_stock_threshold" name="low_stock_threshold" 
+                                   min="0" value="{% if product %}{{ product.low_stock_threshold }}{% else %}10{% endif %}" required>
+                            <small class="text-muted">Alert when stock falls below this number</small>
+                        </div>
+                    </div>
+                    
+                    {% if product %}
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Status *</label>
+                        <select class="form-select" id="status" name="status" required>
+                            <option value="active" {% if product.status == 'active' %}selected{% endif %}>Active</option>
+                            <option value="inactive" {% if product.status == 'inactive' %}selected{% endif %}>Inactive</option>
+                            <option value="out_of_stock" {% if product.status == 'out_of_stock' %}selected{% endif %}>Out of Stock</option>
+                        </select>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Product Image</label>
+                        {% if product and product.image_url %}
+                        <div class="mb-2">
+                            <img src="{{ product.image_url }}" alt="{{ product.name }}" 
+                                 style="max-width: 200px; border-radius: 5px;">
+                        </div>
+                        {% endif %}
+                        <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                        <small class="text-muted">Leave empty to keep current image. Accepted: JPG, PNG, GIF, WEBP (Max 5MB)</small>
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle"></i> {% if product %}Update Product{% else %}Add Product{% endif %}
+                        </button>
+                        <a href="{{ url_for('admin_products') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-x-circle"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6>Tips for Adding Products</h6>
+                <ul class="small text-muted">
+                    <li>Use clear, high-quality images</li>
+                    <li>Write detailed descriptions</li>
+                    <li>Set competitive prices</li>
+                    <li>Monitor stock levels regularly</li>
+                    <li>Update low stock thresholds based on demand</li>
+                </ul>
+            </div>
+        </div>
+        
+        {% if product %}
+        <div class="card shadow-sm mt-3">
+            <div class="card-body">
+                <h6>Product Statistics</h6>
+                <p class="mb-1"><strong>Total Views:</strong> {{ product.views }}</p>
+                <p class="mb-1"><strong>Total Purchases:</strong> {{ product.purchases }}</p>
+                <p class="mb-0"><strong>Created:</strong> {{ product.created_at.strftime('%b %d, %Y') }}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
